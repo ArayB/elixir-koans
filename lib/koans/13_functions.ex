@@ -92,9 +92,22 @@ defmodule Functions do
   koan "The result of a function can be piped into another function as its first argument" do
     result = "full-name"
             |> String.split("-")
-            |> Enum.map(&(String.capitalize(&1)))
+            |> Enum.map(&String.capitalize/1)
             |> Enum.join(" ")
 
     assert result == "Full Name"
+  end
+
+  koan "Conveniently keyword lists can be used for function options" do
+    transform = fn str, opts ->
+      if opts[:upcase] do
+        String.upcase(str)
+      else
+        str
+      end
+    end
+
+    assert transform.("good", upcase: true) == ___
+    assert transform.("good", upcase: false) == ___
   end
 end

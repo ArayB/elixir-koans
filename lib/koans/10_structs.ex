@@ -28,22 +28,14 @@ defmodule Structs do
     assert older.age == 33
   end
 
-  defmodule Plane do
-    defstruct passengers: 0, maker: :boeing
-  end
-
-  def plane?(%Plane{}), do: true
-  def plane?(_), do: false
-
-  koan "Or onto the type of the struct itself" do
-    assert plane?(%Plane{passengers: 417, maker: :boeing}) == true
-    assert plane?(%Person{}) == false
-  end
-
   koan "Struct can be treated like maps" do
     silvia = %Person{age: 22, name: "Silvia"}
 
     assert Map.fetch(silvia, :age) == {:ok, 22}
+  end
+
+  defmodule Plane do
+    defstruct passengers: 0, maker: :boeing
   end
 
   defmodule Airline do
@@ -57,7 +49,7 @@ defmodule Structs do
 
   koan "Use the update_in macro to modify a nested value" do
     airline = %Airline{plane: %Plane{maker: :boeing, passengers: 200}}
-    assert update_in(airline.plane.passengers, &(&1 + 2)) == %Airline{name: "Southwest", plane: %Plane{maker: :boeing, passengers: 202}}
+    assert update_in(airline.plane.passengers, fn(x) -> (x + 2) end) == ___
   end
 
   koan "Use the put_in macro with atoms to replace a nested value in a non-struct" do
